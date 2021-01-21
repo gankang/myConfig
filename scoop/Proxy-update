@@ -1,0 +1,32 @@
+
+
+# scoop和app安装的的路径（自行修改）,默认安装在C盘
+# 例子：
+#     $path="D:\Application\scoop"
+
+$path="D:\Application\scoop"
+
+# 代理（自行修改）
+# 例子：
+#     有密码：$proxy="admin:123@127.0.0.1:7891"
+#     无密码：$proxy="127.0.0.1:7891"
+#     无代理：$proxy=""
+
+$proxy="127.0.0.1:7891"
+
+
+if("%proxy%" -ne ""){
+	scoop config proxy $proxy
+}
+
+if($path -ne ""){
+	$env:SCOOP=$path
+}
+
+
+scoop update
+scoop cache rm *
+scoop update *
+scoop cleanup *
+
+

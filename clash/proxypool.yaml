@@ -1,0 +1,64 @@
+mixed-port: 7891
+allow-lan: false
+mode: Rule
+log-level: info
+external-controller: 127.0.0.1:9090
+dns:
+  enable: true
+  enhanced-mode: redir-host
+  nameserver:
+    - 1.1.1.1
+    - 8.8.8.8
+    - 8.8.4.4
+
+proxy-providers:
+  all:
+    type: http
+    url: #######
+    path: ########
+    health-check:
+      enable: true
+      interval: 600
+      url: http://www.gstatic.com/generate_204
+      
+proxy-groups:
+  - name: 🔎 模式选择
+    type: select
+    proxies:
+      - ♻️ 自动选择
+      - 🚀 节点手选
+      - ☯️ 负载均衡
+      
+  - name: 🚀 节点手选
+    type: select
+    use:
+      - all
+      
+  - name: ♻️ 自动选择
+    type: url-test
+    use:
+      - all
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    
+  - name: ☯️ 负载均衡
+    type: load-balance
+    use:
+      - all
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    strategy: round-robin
+      
+rule-providers:
+  AntiAd:
+    type: http
+    behavior: domain
+    path: ./RuleSet/AntiAd.yaml
+    url: https://raw.fastgit.org/privacy-protection-tools/anti-AD/master/anti-ad-clash.yaml
+    interval: 86400
+    
+rules:
+  - RULE-SET,AntiAd,REJECT
+  - GEOIP,PRIVATE,DIRECT
+  - GEOIP,CN,DIRECT
+  - MATCH,🔎 模式选择

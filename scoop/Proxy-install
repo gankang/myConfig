@@ -1,0 +1,103 @@
+﻿#######################################################
+# scoop和app安装的的路径（自行修改）,默认安装在C盘
+# 例子：
+#     $path="D:\Application\scoop"
+
+$path="D:\Application\scoop"
+
+# 代理（自行修改）
+# 例子：
+#     有密码：$proxy="admin:123@127.0.0.1:7891"
+#     无密码：$proxy="127.0.0.1:7891"
+#     无代理：$proxy=""
+
+$proxy="127.0.0.1:7891"
+#######################################################
+
+if($path -ne ""){
+	$env:SCOOP=$path
+}
+
+Set-ExecutionPolicy RemoteSigned -scope CurrentUser
+iwr -useb 'https://raw.fastgit.org/kidonng/Install/fastgit/install.ps1' | iex
+
+if("%proxy%" -ne ""){
+	scoop config proxy $proxy
+}
+
+#######################################################
+
+# 必要安装
+scoop install git   #winxray 有问题
+
+# 添加bucket软件库
+scoop bucket add mochi https://github.com/Qv2ray/mochi
+scoop bucket add sushi https://github.com/kidonng/sushi
+scoop bucket add dorado https://github.com/chawyehsu/dorado
+scoop bucket add extras
+
+#下载加速
+scoop install aria2
+
+## 开发
+# nodejs长期支持版
+scoop install nodejs-lts
+# 远程连接工具
+scoop install extras/mobaxterm
+# notepad++
+# scoop install extras/notepadplusplus
+# typora md编辑器
+scoop install extras/typora
+# notion笔记
+scoop install extras/notion
+# python
+scoop install python
+# windows-terminal
+# scoop install extras/windows-terminal
+
+## 常用
+# Chrome浏览器
+scoop install extras/googlechrome
+# firefox浏览器
+# scoop install extras/firefox
+# MEGA同步网盘
+scoop install extras/megasync
+# 电报
+scoop install extras/telegram
+# 密码管理器
+scoop install extras/keepass
+# 网易云音乐
+scoop install dorado/neteasemusic
+# potplayer播放器
+scoop install extras/potplayer
+# 微信
+scoop install sushi/wechat
+# geek卸载
+scoop install extras/geekuninstaller
+# ccleaner
+scoop install ccleaner
+# bt下载
+scoop install dorado/qbittorrent-enhanced
+# 截图
+scoop install dorado/snipaste-beta
+
+## 代理
+# clash客户端
+scoop install dorado/clash-for-windows-portable
+# scoop install dorado/clashweb
+
+scoop install mochi/qv2ray-beta
+scoop install mochi/v2ray
+scoop install sushi/xray
+scoop install mochi/v2ray-rules-dat
+scoop install mochi/qv2ray-plugin-trojan-go-beta
+scoop install mochi/qv2ray-plugin-trojan-beta
+scoop install mochi/qv2ray-plugin-ssr-beta
+scoop install mochi/qv2ray-plugin-ss-beta
+scoop install mochi/qv2ray-plugin-naiveproxy-beta
+
+# v2rayN
+scoop install extras/v2rayn
+
+scoop list
+scoop uninstall
